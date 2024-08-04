@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf ./build",
-    "build": "tsc --build"
+    "build": "tsc --build",
+    "style": "npx prettier . --write && npx eslint --config eslint.config.mjs ."
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
     "@typescript-eslint/parser": "^8.0.0",
     "eslint": "^9.8.0",
     "globals": "^15.9.0",
+    "prettier": "3.3.3",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.0.0"
   }
