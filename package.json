@@ -1,33 +1,34 @@
 {
-  "name": "lemon-soda",
-  "version": "0.1.0",
-  "description": "A simple music bot",
-  "main": "index.js",
-  "scripts": {
-    "clean": "rm -rf ./build",
-    "build": "tsc --build",
-    "style": "npx prettier . --write && npx eslint --config eslint.config.mjs ."
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/tromai/lemon-soda.git"
-  },
-  "author": "Trong Nhan Mai",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/tromai/lemon-soda/issues"
-  },
-  "homepage": "https://github.com/tromai/lemon-soda#readme",
-  "dependencies": {
-    "discord.js": "^14.15.3"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.8.0",
-    "@typescript-eslint/parser": "^8.0.0",
-    "eslint": "^9.8.0",
-    "globals": "^15.9.0",
-    "prettier": "3.3.3",
-    "typescript": "^5.5.4",
-    "typescript-eslint": "^8.0.0"
-  }
+    "name": "lemon-soda",
+    "version": "0.1.0",
+    "description": "A simple music bot",
+    "main": "index.js",
+    "scripts": {
+        "clean": "rm -rf ./build",
+        "build": "tsc --build",
+        "style": "npx prettier . --write && npx eslint --config eslint.config.mjs ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/tromai/lemon-soda.git"
+    },
+    "author": "Trong Nhan Mai",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/tromai/lemon-soda/issues"
+    },
+    "homepage": "https://github.com/tromai/lemon-soda#readme",
+    "dependencies": {
+        "discord.js": "^14.15.3"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.8.0",
+        "@typescript-eslint/parser": "^8.0.0",
+        "eslint": "^9.8.0",
+        "globals": "^15.9.0",
+        "prettier": "3.3.3",
+        "tsx": "^4.16.5",
+        "typescript": "^5.5.4",
+        "typescript-eslint": "^8.0.0"
+    }
 }
