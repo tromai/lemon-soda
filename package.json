@@ -6,7 +6,8 @@
     "scripts": {
         "clean": "rm -rf ./build",
         "build": "tsc --build",
-        "style": "npx prettier . --write && npx eslint --config eslint.config.mjs ."
+        "style": "npx prettier . --write && npx eslint --config eslint.config.mjs .",
+        "deploy-commands": "tsx scripts/deploy-commands.ts"
     },
     "repository": {
         "type": "git",
