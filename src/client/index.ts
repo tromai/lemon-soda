@@ -4,6 +4,7 @@ import { EventExport } from "../events/type";
 
 export class MyClient extends Client<true> {
     public commands: Collection<string, SlashCommandExport>;
+
     constructor(
         options: ClientOptions,
         commands: Collection<string, SlashCommandExport>,

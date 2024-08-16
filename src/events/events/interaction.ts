@@ -1,5 +1,5 @@
 import { Interaction, CacheType, Events } from "discord.js";
-import { MyClient } from "../../client/client";
+import { MyClient } from "../../client";
 
 module.exports = {
     name: Events.InteractionCreate,

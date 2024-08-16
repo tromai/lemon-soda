@@ -1,4 +1,4 @@
-import { MyClient } from "../../client/client";
+import { MyClient } from "../../client";
 
 import { Events } from "discord.js";
 
