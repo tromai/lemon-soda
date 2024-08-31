@@ -8,13 +8,12 @@ import { CommandInteraction } from "discord.js";
 
 const playCommand = new SlashCommandBuilder()
     .setName("play")
-    .setDescription("Play a song from URL")
+    .setDescription("Attempt to play anything that you want")
     .addStringOption((option) =>
         option
             .setName("query")
             .setDescription(
-                "(Required) The url or name of the song you want to play. " +
-                    "Spotify and Youtube supported.",
+                "Your query goes here, URL or name, Youtube and Spotify supported.",
             )
             .setRequired(true),
     );
