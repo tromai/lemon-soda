@@ -58,6 +58,14 @@ module.exports = {
                     // (aka your queue in simple word)
                     // we can access this metadata object using queue.metadata later on
                     metadata: interaction,
+                    // Automatically leaves the voice channel if empty
+                    leaveOnEmpty: true,
+                    // Wait 30 seconds before leaving after the channel is empty
+                    leaveOnEmptyCooldown: 30000,
+                    // Do not leave when the queue ends
+                    leaveOnEnd: false,
+                    // Leave when the bot is stopped
+                    leaveOnStop: true,
                 },
             });
 
