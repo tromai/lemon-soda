@@ -1,8 +1,13 @@
 import { useMainPlayer } from "discord-player";
 import {
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle,
     CommandInteractionOptionResolver,
+    ComponentType,
     SlashCommandBuilder,
 } from "discord.js";
+import { createPagesEmbeds } from "../../message_utils.ts";
 import { CommandInteraction } from "discord.js";
 
 const queueCommand = new SlashCommandBuilder()
@@ -11,7 +16,9 @@ const queueCommand = new SlashCommandBuilder()
     .addStringOption((option) =>
         option
             .setName("number")
-            .setDescription("The number of next songs to display (Default: 5)")
+            .setDescription(
+                "The number of songs to display at a time (Default: 5)",
+            )
             .setRequired(false),
     );
 
@@ -27,6 +34,11 @@ module.exports = {
             });
         }
 
+        const queue = player.queues.get(guildId);
+        if (!queue || !queue.isPlaying()) {
+            return interaction.reply({ content: "There is nothing playing" });
+        }
+
         let number = 5;
         const number_option = (
             interaction.options as CommandInteractionOptionResolver
@@ -35,25 +47,104 @@ module.exports = {
             number = parseInt(number_option, 10);
 
             // Check if the result is a valid integer > 0
-            if (isNaN(number) || number <= 0) {
+            if (isNaN(number) || number <= 0 || number > 100) {
                 return interaction.reply(
-                    "Error: The number of songs to display" +
-                        "must be an integer > 0.",
+                    "Error: The number of upcoming tracks to display " +
+                        `must be an integer, > 0.`,
                 );
             }
-        }
-
-        const queue = player.queues.get(guildId);
-        if (!queue || !queue.isPlaying()) {
-            return interaction.reply({ content: "There is nothing playing" });
         }
 
         // The current Track will have pos -1, while the upcoming tracks will
         // starts from 0 -> +inf.
         // Old tracks will have pos index < 0.
-        const songs = queue.tracks
-            .map((track, i) => `${i}. ${track.title} - ${track.author}`)
-            .join("\n");
-        return interaction.reply(`Current queue:\n${songs}`);
+        const songs = queue.tracks.map(
+            (track, i) => `${i + 1}. ${track.title} - ${track.author}\n`,
+        );
+        const embeds = createPagesEmbeds(songs, number);
+
+        let currentPage = 0;
+        // Send the initial message
+        const sentMessage = await interaction.reply({
+            embeds: [embeds[currentPage]],
+            components: [
+                new ActionRowBuilder<ButtonBuilder>().addComponents(
+                    new ButtonBuilder()
+                        .setCustomId("prev")
+                        .setLabel("◀️")
+                        .setStyle(ButtonStyle.Primary)
+                        .setDisabled(true),
+                    new ButtonBuilder()
+                        .setCustomId("next")
+                        .setLabel("▶️")
+                        .setStyle(ButtonStyle.Primary)
+                        .setDisabled(embeds.length <= 1),
+                ),
+            ],
+            fetchReply: true, // Needed to get the message ID for editing later
+        });
+
+        // Create an interaction collector to handle button clicks
+        const collector = sentMessage.createMessageComponentCollector({
+            componentType: ComponentType.Button,
+            time: 60000, // Collector will last for 1 minute
+        });
+
+        collector.on("collect", async (buttonInteraction) => {
+            if (buttonInteraction.user.id !== interaction.user.id) {
+                return buttonInteraction.reply({
+                    content: "You are not authorized to use these buttons.",
+                    ephemeral: true,
+                });
+            }
+
+            if (buttonInteraction.customId === "next") {
+                if (currentPage < embeds.length - 1) {
+                    currentPage++;
+                }
+            } else if (buttonInteraction.customId === "prev") {
+                if (currentPage > 0) {
+                    currentPage--;
+                }
+            }
+
+            await buttonInteraction.update({
+                embeds: [embeds[currentPage]],
+                components: [
+                    new ActionRowBuilder<ButtonBuilder>().addComponents(
+                        new ButtonBuilder()
+                            .setCustomId("prev")
+                            .setLabel("◀️")
+                            .setStyle(ButtonStyle.Primary)
+                            .setDisabled(currentPage === 0),
+                        new ButtonBuilder()
+                            .setCustomId("next")
+                            .setLabel("▶️")
+                            .setStyle(ButtonStyle.Primary)
+                            .setDisabled(currentPage === embeds.length - 1),
+                    ),
+                ],
+            });
+        });
+
+        collector.on("end", () => {
+            // Optionally disable buttons after the collector ends
+            sentMessage.edit({
+                components: [
+                    new ActionRowBuilder<ButtonBuilder>().addComponents(
+                        new ButtonBuilder()
+                            .setCustomId("prev")
+                            .setLabel("◀️")
+                            .setStyle(ButtonStyle.Primary)
+                            .setDisabled(true),
+                        new ButtonBuilder()
+                            .setCustomId("next")
+                            .setLabel("▶️")
+                            .setStyle(ButtonStyle.Primary)
+                            .setDisabled(true),
+                    ),
+                ],
+            });
+        });
     },
 };
