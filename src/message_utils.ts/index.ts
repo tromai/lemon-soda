@@ -37,7 +37,10 @@ export function createPagesEmbeds(lines: string[], linesPerPage: number = 5) {
         const embed = new EmbedBuilder()
             .setColor(0x0099ff)
             .setTitle("Upcoming tracks")
-            .addFields({ name: `Page ${i + 1}/${result.length}`, value: result[i] })
+            .addFields({
+                name: `Page ${i + 1}/${result.length}`,
+                value: result[i],
+            })
             .setTimestamp();
         embeds.push(embed);
     }

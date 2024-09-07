@@ -1,4 +1,3 @@
-import { useMainPlayer } from "discord-player";
 import {
     ActionRowBuilder,
     ButtonBuilder,
@@ -9,6 +8,7 @@ import {
 } from "discord.js";
 import { createPagesEmbeds } from "../../message_utils.ts";
 import { CommandInteraction } from "discord.js";
+import { getQueueFromCommandInteraction, QueueError } from "../../player";
 
 const queueCommand = new SlashCommandBuilder()
     .setName("queue")
@@ -25,18 +25,18 @@ const queueCommand = new SlashCommandBuilder()
 module.exports = {
     data: queueCommand,
     async execute(interaction: CommandInteraction) {
-        const player = useMainPlayer();
-
-        const guildId = interaction.commandGuildId;
-        if (!guildId) {
-            return interaction.reply({
-                content: "Error: Cannot find target channel.",
-            });
-        }
-
-        const queue = player.queues.get(guildId);
-        if (!queue || !queue.isPlaying()) {
-            return interaction.reply({ content: "There is nothing playing" });
+        let queue;
+        try {
+            queue = await getQueueFromCommandInteraction(interaction);
+        } catch (error) {
+            if (error instanceof QueueError) {
+                return interaction.reply({ content: error.message });
+            } else {
+                console.error("Unexpected error:", error);
+                return interaction.reply({
+                    content: "An unexpected error occurred.",
+                });
+            }
         }
 
         let number = 5;
