@@ -1,6 +1,9 @@
 import { useMainPlayer } from "discord-player";
 import { CommandInteraction } from "discord.js";
 
+/**
+ * Raised when there is an error with managing the Queue for a particular guild.
+ */
 export class QueueError extends Error {
     constructor(message: string) {
         super(message);
@@ -9,10 +12,8 @@ export class QueueError extends Error {
 }
 
 /**
- * This method returns the queue corresponding to the guild where the interaction
+ * This method returns the queue corresponding to the guild where ``interaction``
  * was fired from.
- * @param interaction
- * @returns
  */
 export async function getQueueFromCommandInteraction(
     interaction: CommandInteraction,
