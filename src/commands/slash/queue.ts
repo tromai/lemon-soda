@@ -61,8 +61,13 @@ module.exports = {
         const songs = queue.tracks.map(
             (track, i) => `${i + 1}. ${track.title} - ${track.author}\n`,
         );
-        const embeds = createPagesEmbeds(songs, number);
+        if (songs.length == 0) {
+            return interaction.reply(
+                "The current queue is empty. Please add more songs",
+            );
+        }
 
+        const embeds = createPagesEmbeds(songs, number);
         let currentPage = 0;
         // Send the initial message
         const sentMessage = await interaction.reply({

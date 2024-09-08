@@ -4,8 +4,8 @@ import { getQueueFromCommandInteraction, QueueError } from "../../player";
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("pause")
-        .setDescription("Pause the current track"),
+        .setName("resume")
+        .setDescription("Resume playing music"),
     async execute(interaction: CommandInteraction) {
         let queue;
         try {
@@ -21,15 +21,15 @@ module.exports = {
             }
         }
 
-        if (!queue.node.isPlaying()) {
+        if (queue.node.isPlaying()) {
             return interaction.reply({
-                content: "The bot is not playing anyway.",
+                content: "The bot is playing already.",
             });
         }
 
-        const paused = queue.node.setPaused(true);
+        const resume = queue.node.setPaused(false);
         return interaction.reply({
-            content: paused ? "paused" : "something went wrong",
+            content: resume ? "resume" : "something went wrong",
         });
     },
 };

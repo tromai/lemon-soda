@@ -8,7 +8,7 @@ import { CommandInteraction } from "discord.js";
 
 const playCommand = new SlashCommandBuilder()
     .setName("play")
-    .setDescription("Attempt to play anything that you want")
+    .setDescription("Add anything you want to play to the queue")
     .addStringOption((option) =>
         option
             .setName("query")
@@ -64,7 +64,7 @@ module.exports = {
                     // Do not leave when the queue ends
                     leaveOnEnd: false,
                     // Leave when the bot is stopped
-                    leaveOnStop: true,
+                    leaveOnStop: false,
                 },
             });
 

@@ -8,6 +8,12 @@ export class QueueError extends Error {
     }
 }
 
+/**
+ * This method returns the queue corresponding to the guild where the interaction
+ * was fired from.
+ * @param interaction
+ * @returns
+ */
 export async function getQueueFromCommandInteraction(
     interaction: CommandInteraction,
 ) {

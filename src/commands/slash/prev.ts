@@ -2,10 +2,12 @@ import { SlashCommandBuilder } from "discord.js";
 import { CommandInteraction } from "discord.js";
 import { getQueueFromCommandInteraction, QueueError } from "../../player";
 
+const skipCommand = new SlashCommandBuilder()
+    .setName("prev")
+    .setDescription("Go back to the previous track");
+
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName("pause")
-        .setDescription("Pause the current track"),
+    data: skipCommand,
     async execute(interaction: CommandInteraction) {
         let queue;
         try {
@@ -21,15 +23,14 @@ module.exports = {
             }
         }
 
-        if (!queue.node.isPlaying()) {
-            return interaction.reply({
-                content: "The bot is not playing anyway.",
-            });
+        const lastSong = queue.history.previousTrack;
+        if (!lastSong) {
+            return interaction.reply("There is no previous track!");
         }
 
-        const paused = queue.node.setPaused(true);
+        await queue.history.previous();
         return interaction.reply({
-            content: paused ? "paused" : "something went wrong",
+            content: `Playing previous song, [${lastSong.title}](${lastSong.url})`,
         });
     },
 };
