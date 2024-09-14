@@ -4,7 +4,7 @@ import pathlib from "node:path";
 /**
  * Return True if ``content`` ends with any of the suffix in ``suffixes`` else False.
  */
-function hasSuffix(content: string, suffixes: string[]): boolean {
+export function hasSuffix(content: string, suffixes: string[]): boolean {
     return suffixes.some((suff) => content.endsWith(suff));
 }
 
