@@ -22,6 +22,7 @@
     "homepage": "https://github.com/tromai/lemon-soda#readme",
     "dependencies": {
         "@discord-player/extractor": "^4.5.0",
+        "@spotify/web-api-ts-sdk": "^1.2.0",
         "discord-player": "^6.7.1",
         "discord-player-youtubei": "^1.2.6",
         "discord-voip": "^0.1.3",

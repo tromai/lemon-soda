@@ -1,6 +1,7 @@
 import { SlashCommandBuilder } from "discord.js";
 import { CommandInteraction } from "discord.js";
 import { getQueueFromCommandInteraction, QueueError } from "../../player";
+import { MyClient } from "../../client";
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -28,6 +29,9 @@ module.exports = {
         }
 
         const resume = queue.node.setPaused(false);
+        const client = interaction.client as MyClient;
+        client.isUserPaused = false;
+
         return interaction.reply({
             content: resume ? "resume" : "something went wrong",
         });
