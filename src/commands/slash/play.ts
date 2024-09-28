@@ -51,9 +51,11 @@ module.exports = {
             return interaction.followUp("Not found");
         }
 
-        const client = interaction.client as MyClient
+        const client = interaction.client as MyClient;
         client.clearAutoPlayList(voiceChannel.guildId);
-        console.log(`Autoplay list is cleared for guild ${voiceChannel.guildId}`)
+        console.log(
+            `Autoplay list is cleared for guild ${voiceChannel.guildId}`,
+        );
 
         try {
             const { track } = await player.play(voiceChannel, query, {
