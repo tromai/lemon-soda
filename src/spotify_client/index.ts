@@ -38,6 +38,13 @@ export class SpotifyApiError extends Error {
     }
 }
 
+/**
+ * @param title
+ * @param author
+ * @param api
+ * @throws SpotifyApiError if something went wrong when fetching from SpotifyAPI.
+ * @returns
+ */
 export async function getTrackRecommendations(
     title: string,
     author: string,

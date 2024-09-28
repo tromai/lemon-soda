@@ -3,6 +3,8 @@ import { SlashCommandExport } from "../commands/type";
 import { EventExport } from "../events/type";
 import { SpotifyApi } from "@spotify/web-api-ts-sdk";
 import { Track as SpotifyTrack } from "@spotify/web-api-ts-sdk";
+import { Track as DiscordTrack } from "discord-player";
+import { getTrackRecommendations } from "../spotify_client";
 
 export class MyClient extends Client<true> {
     public commands: Collection<string, SlashCommandExport>;
@@ -36,13 +38,47 @@ export class MyClient extends Client<true> {
     }
 
     /**
-     * name
+     * Returns the autoplay status of a guild.
+     * @param guildId The Id of that guild as string.
+     * @returns true if autoplay is ON else false.
      */
-    public addAutoPlayTracks(tracks: Track[], guildId: string) {
+    public isAutoPlayOn(guildId: string): boolean {
+        if (this.autoplayStates[guildId] === undefined) {
+            this.autoplayStates[guildId] = false;
+        }
+        const isAutoPlayOn = this.autoplayStates[guildId];
+        return isAutoPlayOn;
+    }
+
+    /**
+     * Return the next autoplay track as a Spotify Track instance.
+     * Note: the return value of this function must be "converted" into a Track instance
+     * of discord-player.
+     * @param guildId
+     * @param lastPlayedTrack
+     * @throws Will throw an SpotifyError if error happened while fetching song recs from SpotifyAPI.
+     * @returns
+     */
+    public async getNextAutoPlaySpotifyTrack(
+        guildId: string,
+        lastPlayedTrack: DiscordTrack,
+    ) {
         if (this.autoplaySpotifyTracks[guildId] === undefined) {
             this.autoplaySpotifyTracks[guildId] = [];
         }
 
-        tracks.forEach((ele) => this.autoplaySpotifyTracks[guildId].push(ele));
+        if (this.autoplaySpotifyTracks[guildId].length == 0) {
+            // This function call can throw error.
+            const trackRecs = await getTrackRecommendations(
+                lastPlayedTrack.cleanTitle,
+                lastPlayedTrack.author,
+                this.spotify_api,
+            );
+
+            this.autoplaySpotifyTracks[guildId] =
+                this.autoplaySpotifyTracks[guildId].concat(trackRecs);
+        }
+
+        return this.autoplaySpotifyTracks[guildId].pop()!;
     }
 }
