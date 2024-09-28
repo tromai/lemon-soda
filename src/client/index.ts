@@ -81,4 +81,8 @@ export class MyClient extends Client<true> {
 
         return this.autoplaySpotifyTracks[guildId].pop()!;
     }
+
+    public clearAutoPlayList(guildId: string) {
+        this.autoplaySpotifyTracks[guildId] = [];
+    }
 }

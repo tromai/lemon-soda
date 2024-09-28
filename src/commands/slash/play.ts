@@ -5,6 +5,7 @@ import {
     SlashCommandBuilder,
 } from "discord.js";
 import { CommandInteraction } from "discord.js";
+import { MyClient } from "../../client";
 
 const playCommand = new SlashCommandBuilder()
     .setName("play")
@@ -49,6 +50,10 @@ module.exports = {
         if (!result.hasTracks()) {
             return interaction.followUp("Not found");
         }
+
+        const client = interaction.client as MyClient
+        client.clearAutoPlayList(voiceChannel.guildId);
+        console.log(`Autoplay list is cleared for guild ${voiceChannel.guildId}`)
 
         try {
             const { track } = await player.play(voiceChannel, query, {
