@@ -3,7 +3,7 @@
         /* Visit https://aka.ms/tsconfig to read more about this file */
 
         /* Language and Environment */
-        "target": "es2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+        "target": "es2020" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
 
         /* Modules */
         "module": "commonjs" /* Specify what module code is generated. */,
@@ -18,5 +18,6 @@
 
         /* Completeness */
         "skipLibCheck": true /* Skip type checking all .d.ts files. */
-    }
+    },
+    "include": ["src", "jest.config.ts", "scripts"]
 }

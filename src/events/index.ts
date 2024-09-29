@@ -7,7 +7,7 @@ export function loadEventDefinitions(
     dir: string = pathlib.join(__dirname, "./events"),
 ): Collection<string, EventExport> {
     const result = new Collection<string, EventExport>();
-    const paths = getPathsWithExt(dir, [".ts"]);
+    const paths = getPathsWithExt(dir, [".js", ".ts"]);
 
     for (const path of paths) {
         // eslint-disable-next-line @typescript-eslint/no-require-imports

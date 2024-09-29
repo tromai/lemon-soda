@@ -7,7 +7,7 @@ export function loadSlashCommands(
     dir: string = pathlib.join(__dirname, "./slash"),
 ): Collection<string, SlashCommandExport> {
     const result = new Collection<string, SlashCommandExport>();
-    const paths = getPathsWithExt(dir, [".ts"]);
+    const paths = getPathsWithExt(dir, [".js", ".ts"]);
 
     for (const path of paths) {
         // eslint-disable-next-line @typescript-eslint/no-require-imports
