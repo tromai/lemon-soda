@@ -3,6 +3,10 @@ import type { SlashCommandExport } from "./type.d.ts";
 import { Collection, SlashCommandBuilder } from "discord.js";
 import { getPathsWithExt } from "../path_utils/index.js";
 
+/**
+ * Load all slash commands from the ``./slash`` directory.
+ * This funciton should be called once for each {@link MyClient} created.
+ */
 export function loadSlashCommands(
     dir: string = pathlib.join(__dirname, "./slash"),
 ): Collection<string, SlashCommandExport> {

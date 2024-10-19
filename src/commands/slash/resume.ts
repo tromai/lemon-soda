@@ -24,7 +24,7 @@ module.exports = {
 
         if (queue.node.isPlaying()) {
             return interaction.reply({
-                content: "The bot is playing already.",
+                content: "The bot is currently playing.",
             });
         }
 

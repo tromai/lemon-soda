@@ -1,10 +1,11 @@
 import { EmbedBuilder } from "discord.js";
 
 /**
- * Split a string message into strings with length of ``chunkSize`` characters.
- * TODO: enforce chunkSize to be a natural number.
- * @param message
- * @param chunkSize
+ * Split a string ``message`` into strings with length of ``chunkSize`` characters.
+ * We assume that ``chunkSize`` is a natural number.
+ *
+ * @param message The original message
+ * @param chunkSize The size of each chunk
  * @returns
  */
 export function splitMessage(message: string, chunkSize: number) {
@@ -16,17 +17,20 @@ export function splitMessage(message: string, chunkSize: number) {
 }
 
 /**
- * Return an array of pages represented by Embed instances. Each page contains maximum
- * of ``linesPerPage`` lines. And each page's content must be at most 1024 characters
+ * Return an array of {@link EmbedBuilder} as pages.
+ * Each page contains maximum of ``linesPerPage`` lines.
+ * And each page's content must be at most 1024 characters
  * according to https://discordjs.guide/popular-topics/embeds.html#embed-limits
- * and we store the content in a field value.
  * If adding a line exceeds the 1024 characters max. That line will be trimmed and
  * replaced with "...".
- * @param lines
- * @param linesPerPage
- * @returns
+ *
+ * @param {string} lines The input message lines.
+ * @param linesPerPage The maximum number of lines per page.
  */
-export function createPagesEmbeds(lines: string[], linesPerPage: number = 5) {
+export function createPagesEmbeds(
+    lines: string[],
+    linesPerPage: number = 5,
+): EmbedBuilder[] {
     const result = splitLines(lines, linesPerPage, 1024);
 
     const embeds = [];
@@ -46,15 +50,16 @@ export function createPagesEmbeds(lines: string[], linesPerPage: number = 5) {
 }
 
 /**
- * Split an array of lines into an array of paragraphs. Each paragraph contains maximum
- * ``linesPerPage`` from the original array. Each paragraph contains maximum ``maxSize``
- * characters.
- * If a paragraph exceeds ``maxSize``, it will be trimmed down and the last 3 characters
- * are replaced with "...".
+ * Split an array of lines into an array of paragraphs.
+ * Each paragraph is a string, which:
+ *     * contains maximum ``linesPerPage`` lines from the original array
+ *     * contains maximum ``maxSize`` characters.
+ * If adding a line into a paragraph exceeds ``maxSize`` characters, that line will be trimmed down
+ * and the last 3 characters are replaced with "...".
  * We assume that maxSize is always > 3.
- * @param lines
- * @param linesPerPage
- * @returns
+ *
+ * @param lines The original array of lines.
+ * @param linesPerPage The maximum number of lines per page.
  */
 export function splitLines(
     lines: string[],
@@ -63,30 +68,33 @@ export function splitLines(
 ) {
     const result = [];
     let lineCount = 0;
-    let currentBatch = "";
+    let currentParagraph = "";
     for (let i = 0; i < lines.length; i++) {
         const current = lines[i];
-        currentBatch = currentBatch.concat(current);
+        currentParagraph = currentParagraph.concat(current);
         lineCount++;
 
-        // Only ends the paragraph if either two of these conditions meet.
-        if (currentBatch.length < maxSize && lineCount < linesPerPage) {
+        // Only ends the paragraph if NEITHER of these conditions meet.
+        if (currentParagraph.length < maxSize && lineCount < linesPerPage) {
             continue;
         }
 
-        if (currentBatch.length > maxSize) {
-            // 3 is the size of "..."
-            currentBatch = currentBatch.substring(0, maxSize - 3) + "...";
+        // Trim the paragraph down to 1024 characters and replace the last
+        // 3 characters with "..." if the paragraph exceeds the 1024 characters limit.
+        if (currentParagraph.length > maxSize) {
+            currentParagraph =
+                currentParagraph.substring(0, maxSize - 3) + "...";
         }
 
-        result.push(currentBatch);
-        currentBatch = "";
+        result.push(currentParagraph);
+        currentParagraph = "";
         lineCount = 0;
     }
 
-    // Add the remaining lines.
-    if (!(currentBatch.length == 0)) {
-        result.push(currentBatch);
+    // Add whatever is remained in the paragraph.
+    // It's sure that this paragraph will be within the char and line limit.
+    if (!(currentParagraph.length == 0)) {
+        result.push(currentParagraph);
     }
     return result;
 }

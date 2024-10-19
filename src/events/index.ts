@@ -3,6 +3,10 @@ import type { EventExport } from "./type.d.ts";
 import { Collection } from "discord.js";
 import { getPathsWithExt } from "../path_utils/index.js";
 
+/**
+ * Load all events in the ``./events`` directory.
+ * This funciton should be called once for each {@link MyClient} created.
+ */
 export function loadEventDefinitions(
     dir: string = pathlib.join(__dirname, "./events"),
 ): Collection<string, EventExport> {

@@ -2,5 +2,6 @@
 build
 coverage
 .vscode
+.venv
 *.yaml
 *.yml
