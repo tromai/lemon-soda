@@ -1,6 +1,9 @@
 import { REST, Routes } from "discord.js";
-import { clientId, guildId, token } from "../data/config.json";
 import { loadSlashCommands } from "../src/commands";
+
+const token = process.env.TOKEN;
+const clientId = process.env.CLIENT_ID;
+const guildId = process.env.GUILD_ID;
 
 const slashCommands = loadSlashCommands();
 const slashCommandsJSON = [];

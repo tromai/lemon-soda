@@ -1,13 +1,29 @@
 import { GatewayIntentBits } from "discord.js";
-import { token } from "../data/config.json";
 import { loadSlashCommands } from "./commands";
 import { MyClient } from "./client";
 import { loadEventDefinitions } from "./events";
 import { GuildQueueEvent, Player } from "discord-player";
 import { YoutubeiExtractor } from "discord-player-youtubei";
 import { SpotifyExtractor } from "@discord-player/extractor";
-import { spotifyClientId, spotifyClientSecret } from "../data/config.json";
 import { SpotifyApi } from "@spotify/web-api-ts-sdk";
+
+const token = process.env.TOKEN;
+const spotifyClientId = process.env.SPOTIFY_CLIENT_ID;
+const spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET;
+
+if (!token) {
+    throw new Error("Missing required environment variable: TOKEN");
+}
+
+if (!spotifyClientId) {
+    throw new Error("Missing required environment variable: SPOTIFY_CLIENT_ID");
+}
+
+if (!spotifyClientSecret) {
+    throw new Error(
+        "Missing required environment variable: SPOTIFY_CLIENT_SECRET",
+    );
+}
 
 const spotify_api = SpotifyApi.withClientCredentials(
     spotifyClientId,
