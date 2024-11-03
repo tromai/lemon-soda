@@ -28,7 +28,9 @@ FROM node:20.18.0-alpine as final
 
 WORKDIR /usr/lemon-soda
 
-RUN apk add --no-cache ffmpeg
+RUN apk add --no-cache ffmpeg \
+    && apk del --purge \
+    && rm -rf /var/cache/apk/*
 
 COPY --from=compile-source /usr/app/build/ ./build
 COPY --from=deps-install /usr/app/node_modules ./node_modules
