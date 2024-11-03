@@ -19,5 +19,5 @@
         /* Completeness */
         "skipLibCheck": true /* Skip type checking all .d.ts files. */
     },
-    "include": ["src", "jest.config.ts", "scripts"]
+    "include": ["src"]
 }

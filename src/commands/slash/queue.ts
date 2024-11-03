@@ -67,7 +67,7 @@ module.exports = {
             );
         }
 
-        const embeds = createPagesEmbeds(songs, number);
+        const embeds = createPagesEmbeds("Upcoming tracks", songs, number);
         let currentPage = 0;
         // Send the initial message
         const sentMessage = await interaction.reply({

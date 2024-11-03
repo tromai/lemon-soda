@@ -24,10 +24,12 @@ export function splitMessage(message: string, chunkSize: number) {
  * If adding a line exceeds the 1024 characters max. That line will be trimmed and
  * replaced with "...".
  *
+ * @param {string} title The title of the returning embeds.
  * @param {string} lines The input message lines.
  * @param linesPerPage The maximum number of lines per page.
  */
 export function createPagesEmbeds(
+    title: string,
     lines: string[],
     linesPerPage: number = 5,
 ): EmbedBuilder[] {
@@ -37,7 +39,7 @@ export function createPagesEmbeds(
     for (let i = 0; i < result.length; i++) {
         const embed = new EmbedBuilder()
             .setColor(0x0099ff)
-            .setTitle("Upcoming tracks")
+            .setTitle(title)
             .addFields({
                 name: `Page ${i + 1}/${result.length}`,
                 value: result[i],
@@ -97,4 +99,19 @@ export function splitLines(
         result.push(currentParagraph);
     }
     return result;
+}
+
+/**
+ * Trim a string to the maximum size character length.
+ * @param content
+ * @param maxSize
+ * @param ellipsis
+ */
+export function ensureStringLen(content: string, maxSize: number) {
+    const ellipsis = "...";
+    if (content.length < maxSize) {
+        return content;
+    }
+
+    return content.substring(0, maxSize - ellipsis.length) + ellipsis;
 }
