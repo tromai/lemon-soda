@@ -48,7 +48,7 @@ After you finish those instructions, you will be able to obtain:
 Follow these instructions to obtain `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET`:
 
 -   [Create a Spotify app](https://developer.spotify.com/documentation/web-api/tutorials/getting-started#create-an-app)
--   [Obtain the client Id and sercret from the Spotify Dashboard](https://developer.spotify.com/documentation/web-api/tutorials/getting-started#request-an-access-token) (note: you don't need to obtain the access token by yourselves, the client Id and sercret is enough) - These 2 correspond to `spotifyClientId` and `spotifyClientSecret` respectively.
+-   [Obtain the client Id and sercret from the Spotify Dashboard](https://developer.spotify.com/documentation/web-api/tutorials/getting-started#request-an-access-token) (note: you don't need to obtain the access token by yourselves, the client Id and secret is enough) - These 2 correspond to `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` respectively.
 
 ### Registering the slash commands of the bot to Discord
 
