@@ -14,6 +14,7 @@ on:
 
 jobs:
   build:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js
@@ -32,6 +33,7 @@ jobs:
           npm run build
   build-docker:
     needs: [build]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: build docker image
