@@ -1,0 +1,33 @@
+name: build and test
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - push
+
+jobs:
+  build:
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      - name: install dependencies
+        run: npm install
+      - name: linting
+        run: npm run style
+      - name: testing
+        run: npm run test
+      - name: compiling typescript
+      - run: |
+          npm run clean
+          npm run build
+  build-docker:
+    needs: [build]
+    steps:
+      - uses: actions/checkout@v4
+      - name: build docker image
+        run: build -t ghcr.io/tromai/lemon-soda:testing -f Dockerfile ./
