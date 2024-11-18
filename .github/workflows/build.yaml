@@ -3,7 +3,7 @@ name: build and test
 on:
   pull_request:
     branches:
-    - '*'
+    - main
     types:
     - opened
     - reopened
@@ -32,4 +32,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: build docker image
-        run: build -t ghcr.io/tromai/lemon-soda:testing -f Dockerfile ./
+        run: docker build -t ghcr.io/tromai/lemon-soda:testing -f Dockerfile ./
