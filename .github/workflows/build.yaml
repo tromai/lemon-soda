@@ -3,9 +3,7 @@ name: build and test
 on:
   pull_request:
     branches:
-      - main
-    types:
-      - push
+    - '*'
 
 jobs:
   build:
